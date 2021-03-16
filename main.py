@@ -47,7 +47,7 @@ class Join(QtWidgets.QMainWindow):
             return
         else:
             try:
-                self.win = UI_Main(self)
+                self.win = UI_Main("DATABASE.db")
                 self.close()
                 self.win.show()
 
