@@ -48,10 +48,11 @@ class UI_Main(QMainWindow, Ui_MainWindow):
 
     def student(self):
         try:
+            x = []
             a = self.tableWidget.currentRow()
             for i in range(self.tableWidget.columnCount()):
-                print(self.tableWidget.item(a, i).text())
-            print(a)
+                x.append(self.tableWidget.item(a, i).text())
+            print(x)
         except Exception as er:
             print(er)
 
