@@ -38,7 +38,7 @@ class Join(QtWidgets.QMainWindow):
         con = sqlite3.connect("DATABASE.db")
         curs = con.cursor()
         ex = curs.execute(
-            """SELECT * FROM UserForm WHERE email = "{}" and password = "{}" """.format(Login, Password)).fetchall()
+            """SELECT * FROM Teachers WHERE FIO = "{}" and password = "{}" """.format(Login, Password)).fetchall()
         con.commit()
         con.close()
         if not ex:
