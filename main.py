@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 import sqlite3
 from startwindow import Ui_MainWindow
 from join import *
+from Results_Table import *
 import sys
 
 
@@ -55,6 +56,24 @@ class Join(QtWidgets.QMainWindow):
                 print(er)
 
 
+class Results_Table(QMainWindow, Ui_Results_Table):
+    def __init__(self, path):
+        self.path = path
+        super().__init__()
+        self.setupUi(self)
+
+        self.btn_go_to_main.clicked.connect(self.go_to_main)
+
+    def go_to_main(self):
+        try:
+            self.win = UI_Main("DATABASE.db")
+            self.close()
+            self.win.show()
+
+        except Exception as er:
+            print(er)
+
+
 class UI_Main(QMainWindow, Ui_MainWindow):
     def __init__(self, path):
         self.path = path
@@ -72,7 +91,21 @@ class UI_Main(QMainWindow, Ui_MainWindow):
         self.update_data()
         self.tableWidget.cellClicked.connect(self.student)
 
+        self.btn_go_to_tables.clicked.connect(self.go_to_tables)
+        self.btn_go_to_zach.clicked.connect(self.go_to_zach)
+
         self.student_status = 'Новый'
+
+    def go_to_tables(self):
+        try:
+            self.win = Results_Table("DATABASE.db")
+            self.close()
+            self.win.show()
+        except Exception as er:
+            print(er)
+
+    def go_to_zach(self):
+        pass
 
     def update_data(self):
         self.data = self.curs.execute(
@@ -125,13 +158,11 @@ class UI_Main(QMainWindow, Ui_MainWindow):
 
     def student(self):
         try:
-            x = []
-            a = self.tableWidget.currentRow()
-            for i in range(self.tableWidget.columnCount()):
-                x.append(self.tableWidget.item(a, i).text())
-            print(x)
-        except Exception as er:
-            print(er)
+            dialog = Dialog(self, num=self.tableWidget.verticalHeader().sortIndicatorSection())
+            dialog.show()
+            print("no error")
+        except Exception as error:
+            print(error)
 
 
 if __name__ == "__main__":
