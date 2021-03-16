@@ -25,7 +25,7 @@ class UI_Main(QMainWindow, Ui_MainWindow):
 
     def update_data(self):
         self.data = self.curs.execute(
-            """Select id, name, sex, email, phone_number from UserForm""").fetchall()
+            """Select id, FIO, sex, email, phone_number from UserForm""").fetchall()
         self.update_table()
 
     def update_table(self):
