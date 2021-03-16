@@ -19,14 +19,22 @@ class UI_Main(QMainWindow, Ui_MainWindow):
         self.tableWidget.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().setSectionResizeMode(4, QtWidgets.QHeaderView.Stretch)
-        #self.tableWidget.horizontalHeader().setSectionResizeMode(5, QtWidgets.QHeaderView.Stretch)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(5, QtWidgets.QHeaderView.Stretch)
         self.update_data()
         self.tableWidget.cellClicked.connect(self.student)
 
+        self.student_status = 'Новый'
+
     def update_data(self):
         self.data = self.curs.execute(
-            """Select id, name, sex, email, phone_number from UserForm""").fetchall()
+            """Select id, FIO, sex, email, phone_number from UserForm""").fetchall()
         self.update_table()
+
+        for i in range(1, self.tableWidget.rowCount() + 1):
+            self.anketa = self.curs.execute(
+                f"""Select phone_number, photo_path, campus, place_of_birth, birthday from Anket where id='{i}'""").fetchone()
+
+        print(self.anketa)
 
     def update_table(self):
         self.tableWidget.setRowCount(0)
