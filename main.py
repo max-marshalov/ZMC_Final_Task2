@@ -258,6 +258,7 @@ class Results_Table(QMainWindow, Ui_Results_Table):
         self.setupUi(self)
         self.con = sqlite3.connect(self.path)
         self.cur = self.con.cursor()
+        self.get_data()
 
         self.btn_go_to_main.clicked.connect(self.go_to_main)
         self.comboBox.activated.connect(self.get_data)
