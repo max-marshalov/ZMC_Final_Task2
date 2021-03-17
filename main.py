@@ -75,36 +75,41 @@ class CheckWindow(QMainWindow, Ui_Check):
         self.achives_photo.clicked.connect(self.shw_ach_photo)
         self.join_agree_photo.clicked.connect(self.shw_join_photo)
     def shw_pers_photo(self):
-        self.ex = Example(self.data[0])
-        self.ex.show()
+        if self.data[0]:
+            self.ex = Example(self.data[0])
+            self.ex.show()
 
     def shw_ag_photo(self):
-        self.ex = Example(self.data[1])
-        self.ex.show()
+        if self.data[1]:
+            self.ex = Example(self.data[1])
+            self.ex.show()
 
     def shw_join_photo(self):
-        self.ex = Example(self.data[2])
-        self.ex.show()
+        if self.data[2]:
+            self.ex = Example(self.data[2])
+            self.ex.show()
 
     def shw_paper_photo(self):
         dt = self.curs.execute("""Select photo_path from paper where id = 1""").fetchall()[0][0]
-        self.ex = Example(dt)
-        self.ex.show()
+        if dt:
+            self.ex = Example(dt)
+            self.ex.show()
 
     def shw_tb_photo(self):
         try:
             dt = self.curs.execute("""Select photo_path from Education where id = 1""").fetchall()[0][0]
-
-            self.ex = Example(dt)
-            self.ex.show()
+            if dt:
+                self.ex = Example(dt)
+                self.ex.show()
         except Exception as er:
             print(er)
 
     def shw_ach_photo(self):
         try:
             dt = self.curs.execute("""Select photo_path from Achives where id = 1""").fetchall()[0][0]
-            self.ex = Example(dt)
-            self.ex.show()
+            if dt:
+                self.ex = Example(dt)
+                self.ex.show()
         except Exception as er:
             print(er)
 
@@ -235,9 +240,9 @@ class UI_Main(QMainWindow, Ui_MainWindow):
 
     def student(self):
         try:
-            self.win = CheckWindow("DATABASE.db")
-            self.close()
-            self.win.show()
+            dialog = Dialog(self, num=self.tableWidget.verticalHeader().sortIndicatorSection())
+            dialog.show()
+            print("no error")
         except Exception as error:
             print(error)
 
