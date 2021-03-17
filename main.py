@@ -77,6 +77,31 @@ class CheckWindow(QMainWindow, Ui_Check):
         self.achives_photo.clicked.connect(self.shw_ach_photo)
         self.join_agree_photo.clicked.connect(self.shw_join_photo)
 
+        self.radioButton_bad.clicked.connect(self.unblocking)
+        self.radioButton_good.clicked.connect(self.unblocking)
+
+        self.checkbox_base = [self.checkBox, self.checkBox_2, self.checkBox_3, self.checkBox_4, self.checkBox_5,
+                              self.checkBox_6]
+
+        self.btn_back.clicked.connect(self.go_to_main)
+
+    def go_to_main(self):
+        try:
+            self.win = UI_Main("DATABASE.db")
+            self.close()
+            self.win.show()
+
+        except Exception as er:
+            print(er)
+
+    def unblocking(self):
+        if self.radioButton_bad.isChecked():
+            for box in self.checkbox_base:
+                box.setEnabled(1)
+        else:
+            for box in self.checkbox_base:
+                box.setDisabled(1)
+
     def shw_pers_photo(self):
         if self.data[0]:
             self.ex = Example(self.data[0])
