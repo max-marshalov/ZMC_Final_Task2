@@ -55,8 +55,6 @@ class Join(QtWidgets.QMainWindow):
 
             except Exception as er:
                 print(er)
-
-
 ################################################################################################################
 ################################################################################################################
 class CheckWindow(QMainWindow, Ui_Check):
@@ -76,7 +74,6 @@ class CheckWindow(QMainWindow, Ui_Check):
         self.tabel_photo.clicked.connect(self.shw_tb_photo)
         self.achives_photo.clicked.connect(self.shw_ach_photo)
         self.join_agree_photo.clicked.connect(self.shw_join_photo)
-
     def shw_pers_photo(self):
         self.ex = Example(self.data[0])
         self.ex.show()
@@ -133,8 +130,6 @@ class Example(QWidget):
         self.move(300, 200)
         self.setWindowTitle('Photo')
         self.show()
-
-
 #####################################################################################################################
 ##########################################################################################################################
 
