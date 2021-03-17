@@ -259,9 +259,9 @@ class UI_Main(QMainWindow, Ui_MainWindow):
 
     def student(self):
         try:
-            dialog = Dialog(self, num=self.tableWidget.verticalHeader().sortIndicatorSection())
-            dialog.show()
-            print("no error")
+            self.win = CheckWindow("DATABASE.db")
+            self.close()
+            self.win.show()
         except Exception as error:
             print(error)
 
