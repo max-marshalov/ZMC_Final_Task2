@@ -1,10 +1,8 @@
 import smtplib
 
-# yandex_mail = 'info40.sgu@yandex.ru'
-# yandex_pass = 'Team40SGU'
+yandex_mail = 'info40.sgu@yandex.ru'
+yandex_pass = 'Team40SGU'
 
-yandex_mail = 'Semen.Savelev.3P@yandex.ru'
-yandex_pass = 'Evro_007_77_7'
 
 
 def send_emails(title, msg):
