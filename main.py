@@ -105,12 +105,11 @@ class CheckWindow(QMainWindow, Ui_Check):
             self.con.commit()
             # отправка письма с ошибками
         else:
+            # отправка письма об участии
             self.curs.execute(
                 f"""UPDATE UserForm set level = 'Принято' WHERE id = {self.user}"""
             )
             self.con.commit()
-            print(self.user)
-            print(self.wrongs)
 
     def go_to_main(self):
         try:
@@ -290,7 +289,6 @@ class UI_Main(QMainWindow, Ui_MainWindow):
             kol = 0
             self.level = self.curs.execute(
                 f"""Select level from UserForm WHERE id = {i + 1}""").fetchone()[0]
-            print(self.level)
 
             if self.level == None:
                 self.level = 'Новый'

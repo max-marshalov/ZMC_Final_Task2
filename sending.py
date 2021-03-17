@@ -1,12 +1,36 @@
 import smtplib
 
+# yandex_mail = 'info40.sgu@yandex.ru'
+# yandex_pass = 'Team40SGU'
 
-def send_message(email, message):
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
-    server.login("limonadov44@gmail.com", "1980limon44")
-    server.sendmail("limonadov44@gmail.com", email, message)
+yandex_mail = 'Semen.Savelev.3P@yandex.ru'
+yandex_pass = 'Evro_007_77_7'
+
+
+def send_emails(title, msg):
+    print('ok')
+    server = smtplib.SMTP_SSL('smtp.yandex.com')
+    print('ok')
+    server.ehlo()
+
+    server.ehlo(yandex_mail)
+    server.login(yandex_mail, yandex_pass)
+    server.auth_plain()
+    send_to_email = 'costa.spy@yandex.ru'
+    server.login(yandex_mail, yandex_pass)
+    message = 'Subject: {}\n\n{}'.format(title, msg)
+    server.sendmail(yandex_mail, send_to_email, message)
     server.quit()
+    print('E-mails successfully sent!')
 
 
-send_message("ctvbxm@mail.ru", "Three hundred backs")
+# message = 'Блин блинский'
+# message = message.encode("utf-8")
+#
+# theme = 'Ага'
+# theme = theme.encode("utf-8")
+
+theme = 'dasd'
+message = 'asdsafasfasfasf'
+
+send_emails(theme, message)
