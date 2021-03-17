@@ -204,8 +204,56 @@ class Results_Table(QMainWindow, Ui_Results_Table):
         self.path = path
         super().__init__()
         self.setupUi(self)
+        self.con = sqlite3.connect(self.path)
+        self.cur = self.con.cursor()
 
         self.btn_go_to_main.clicked.connect(self.go_to_main)
+        self.comboBox.activated.connect(self.get_data)
+        # self.user_id = self.cur.execute("""Select PersonalData from Anket""").fetchall()[0]
+        # self.exam = self.cur.execute("""Select Exams from Anket""").fetchall()[0]
+        # self.ach = self.cur.execute("Select Achives from Anket").fetchall()[0]
+        # self.cp = self.cur.execute("Select copy from Anket").fetchall()[0]
+
+    def get_data(self):
+        try:
+            self.brch = self.cur.execute(
+                """Select id from Branches where name = "{}"  """.format(self.comboBox.currentText())).fetchall()[0][0]
+            self.need = self.cur.execute(
+                """Select need from Branches where name = "{}" """.format(self.comboBox.currentText())).fetchall()[0][0]
+
+            self.data = self.cur.execute(
+                """Select PersonalData, Exams, Achives, copy from Anket WHERE Branch = {}""".format(
+                    self.brch)).fetchall()
+            self.items = []
+            for i in self.data:
+                self.FIO = \
+                    self.cur.execute("""Select FIO from UserForm WHERE id = {}""".format(i[0])).fetchall()[0][0]
+                self.ach = \
+                    self.cur.execute("""Select price from Achives where id = {}""".format(i[2])).fetchall()[0][0]
+                if i[3]:
+                    self.cp = "Да"
+                else:
+                    self.cp = "Нет"
+                self.ex = self.cur.execute(
+                    """Select rus, math, "{}" from Exams where id = {} """.format(self.need, i[1])).fetchall()[0]
+                self.summ = sum(self.ex)
+                self.items.append((self.FIO, self.summ, self.ach, self.cp))
+                self.tableWidget.setRowCount(0)
+                n = len(self.items)
+                self.tableWidget.setRowCount(n)
+                for j in range(n):
+                    self.tableWidget.setItem(j, 0, QTableWidgetItem())
+                    self.tableWidget.setItem(j, 1, QTableWidgetItem())
+                    self.tableWidget.setItem(j, 2, QTableWidgetItem())
+                    self.tableWidget.setItem(j, 3, QTableWidgetItem())
+
+                    self.tableWidget.item(j, 0).setText(self.items[j][0])
+                    self.tableWidget.item(j, 1).setText(str(self.items[j][1]))
+                    self.tableWidget.item(j, 2).setText(str(self.items[j][2]))
+                    self.tableWidget.item(j, 3).setText(self.items[j][3])
+
+        except Exception as er:
+            print(er)
 
     def go_to_main(self):
         try:
@@ -215,6 +263,7 @@ class Results_Table(QMainWindow, Ui_Results_Table):
 
         except Exception as er:
             print(er)
+
 
 
 class UI_Main(QMainWindow, Ui_MainWindow):
