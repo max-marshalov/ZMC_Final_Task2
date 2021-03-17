@@ -60,22 +60,64 @@ class Join(QtWidgets.QMainWindow):
 ################################################################################################################
 ################################################################################################################
 class CheckWindow(QMainWindow, Ui_Check):
-    def __init__(self, path):
+    def __init__(self, path, user):
+        self.user = user
         self.path = path
         super().__init__()
         self.setupUi(self)
         self.con = sqlite3.connect(self.path)
         self.curs = self.con.cursor()
-        self.data = \
-            self.curs.execute("""SELECT photo_path, agree_path, agree_join_path from Anket WHERE id = 1""").fetchall()[
-                0]
-
+        try:
+            self.data = self.curs.execute(
+                f"""SELECT photo_path, agree_path, agree_join_path from Anket WHERE id = {self.user}""").fetchall()[0]
+        except Exception as ex:
+            self.data = ('', '', '')
+        print(self.data)
         self.personal_photo.clicked.connect(self.shw_pers_photo)
         self.paper_photo.clicked.connect(self.shw_paper_photo)
         self.agree_photo.clicked.connect(self.shw_ag_photo)
         self.tabel_photo.clicked.connect(self.shw_tb_photo)
         self.achives_photo.clicked.connect(self.shw_ach_photo)
         self.join_agree_photo.clicked.connect(self.shw_join_photo)
+
+        self.radioButton_bad.clicked.connect(self.unblocking)
+        self.radioButton_good.clicked.connect(self.unblocking)
+
+        self.checkbox_base = [self.checkBox, self.checkBox_2, self.checkBox_3, self.checkBox_4, self.checkBox_5,
+                              self.checkBox_6]
+
+        self.btn_back.clicked.connect(self.go_to_main)
+        self.btn_send.clicked.connect(self.sending)
+
+    def sending(self):
+        self.wrongs = []
+        if self.radioButton_bad.isChecked():
+            for box in self.checkbox_base:
+                if box.isChecked():
+                    self.wrongs.append(box.text())
+            # отправка письма с ошибками
+        else:
+            pass
+            # отправка письма с участием
+        print(self.user)
+        print(self.wrongs)
+
+    def go_to_main(self):
+        try:
+            self.win = UI_Main("DATABASE.db")
+            self.close()
+            self.win.show()
+
+        except Exception as er:
+            print(er)
+
+    def unblocking(self):
+        if self.radioButton_bad.isChecked():
+            for box in self.checkbox_base:
+                box.setEnabled(1)
+        else:
+            for box in self.checkbox_base:
+                box.setDisabled(1)
 
     def shw_pers_photo(self):
         if self.data[0]:
@@ -259,7 +301,7 @@ class UI_Main(QMainWindow, Ui_MainWindow):
 
     def student(self):
         try:
-            self.win = CheckWindow("DATABASE.db")
+            self.win = CheckWindow("DATABASE.db", int(self.tableWidget.item(self.tableWidget.currentRow(), 0).text()))
             self.close()
             self.win.show()
         except Exception as error:
