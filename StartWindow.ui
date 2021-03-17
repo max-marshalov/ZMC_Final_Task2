@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,8 +57,33 @@
      </property>
     </column>
    </widget>
+   <widget class="QPushButton" name="btn_go_to_tables">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>370</y>
+      <width>241</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Конкурсные таблицы</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_go_to_zach">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>400</y>
+      <width>241</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Списки на зачисление</string>
+    </property>
+   </widget>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

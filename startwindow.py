@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(800, 601)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
@@ -35,10 +35,13 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(4, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(5, item)
+        self.btn_go_to_tables = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_go_to_tables.setGeometry(QtCore.QRect(540, 370, 241, 23))
+        self.btn_go_to_tables.setObjectName("btn_go_to_tables")
+        self.btn_go_to_zach = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_go_to_zach.setGeometry(QtCore.QRect(540, 400, 241, 23))
+        self.btn_go_to_zach.setObjectName("btn_go_to_zach")
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -58,3 +61,5 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Телефон"))
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Статус"))
+        self.btn_go_to_tables.setText(_translate("MainWindow", "Конкурсные таблицы"))
+        self.btn_go_to_zach.setText(_translate("MainWindow", "Списки на зачисление"))
