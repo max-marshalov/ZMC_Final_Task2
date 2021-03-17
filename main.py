@@ -55,6 +55,8 @@ class Join(QtWidgets.QMainWindow):
 
             except Exception as er:
                 print(er)
+
+
 ################################################################################################################
 ################################################################################################################
 class CheckWindow(QMainWindow, Ui_Check):
@@ -74,59 +76,59 @@ class CheckWindow(QMainWindow, Ui_Check):
         self.tabel_photo.clicked.connect(self.shw_tb_photo)
         self.achives_photo.clicked.connect(self.shw_ach_photo)
         self.join_agree_photo.clicked.connect(self.shw_join_photo)
-def shw_pers_photo(self):
-    if self.data[0]:
-        self.ex = Example(self.data[0])
-        self.ex.show()
-    else:
-        info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
 
-def shw_ag_photo(self):
-    if self.data[1]:
-        self.ex = Example(self.data[1])
-        self.ex.show()
-    else:
-        info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
-
-def shw_join_photo(self):
-    if self.data[2]:
-        self.ex = Example(self.data[2])
-        self.ex.show()
-    else:
-        info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
-
-def shw_paper_photo(self):
-    dt = self.curs.execute("""Select photo_path from paper where id = 1""").fetchall()[0][0]
-    if dt:
-        self.ex = Example(dt)
-        self.ex.show()
-
-    else:
-        info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
-
-def shw_tb_photo(self):
-    try:
-        dt = self.curs.execute("""Select photo_path from Education where id = 1""").fetchall()[0][0]
-        if dt:
-            self.ex = Example(dt)
-            self.ex.show()
-        else:
-            info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
-    except Exception as er:
-        print(er)
-
-def shw_ach_photo(self):
-    try:
-        dt = self.curs.execute("""Select photo_path from Achives where id = 1""").fetchall()[0][0]
-        if dt:
-            self.ex = Example(dt)
+    def shw_pers_photo(self):
+        if self.data[0]:
+            self.ex = Example(self.data[0])
             self.ex.show()
         else:
             info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
 
-    except Exception as er:
-        print(er)
+    def shw_ag_photo(self):
+        if self.data[1]:
+            self.ex = Example(self.data[1])
+            self.ex.show()
+        else:
+            info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
 
+    def shw_join_photo(self):
+        if self.data[2]:
+            self.ex = Example(self.data[2])
+            self.ex.show()
+        else:
+            info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
+
+    def shw_paper_photo(self):
+        dt = self.curs.execute("""Select photo_path from paper where id = 1""").fetchall()[0][0]
+        if dt:
+            self.ex = Example(dt)
+            self.ex.show()
+
+        else:
+            info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
+
+    def shw_tb_photo(self):
+        try:
+            dt = self.curs.execute("""Select photo_path from Education where id = 1""").fetchall()[0][0]
+            if dt:
+                self.ex = Example(dt)
+                self.ex.show()
+            else:
+                info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
+        except Exception as er:
+            print(er)
+
+    def shw_ach_photo(self):
+        try:
+            dt = self.curs.execute("""Select photo_path from Achives where id = 1""").fetchall()[0][0]
+            if dt:
+                self.ex = Example(dt)
+                self.ex.show()
+            else:
+                info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
+
+        except Exception as er:
+            print(er)
 
 
 class Example(QWidget):
@@ -150,6 +152,8 @@ class Example(QWidget):
         self.move(300, 200)
         self.setWindowTitle('Photo')
         self.show()
+
+
 #####################################################################################################################
 ##########################################################################################################################
 
@@ -255,9 +259,9 @@ class UI_Main(QMainWindow, Ui_MainWindow):
 
     def student(self):
         try:
-            dialog = Dialog(self, num=self.tableWidget.verticalHeader().sortIndicatorSection())
-            dialog.show()
-            print("no error")
+            self.win = CheckWindow("DATABASE.db")
+            self.close()
+            self.win.show()
         except Exception as error:
             print(error)
 
