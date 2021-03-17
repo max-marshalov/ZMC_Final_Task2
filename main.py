@@ -274,7 +274,6 @@ class Results_Table(QMainWindow, Ui_Results_Table):
             print(er)
 
 
-
 class UI_Main(QMainWindow, Ui_MainWindow):
     def __init__(self, path):
         self.path = path
