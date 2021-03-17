@@ -77,14 +77,12 @@ class CheckWindow(QMainWindow, Ui_Check):
         self.achives_photo.clicked.connect(self.shw_ach_photo)
         self.join_agree_photo.clicked.connect(self.shw_join_photo)
 
-
     def shw_pers_photo(self):
         if self.data[0]:
             self.ex = Example(self.data[0])
             self.ex.show()
         else:
             info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
-
 
     def shw_ag_photo(self):
         if self.data[1]:
@@ -93,14 +91,12 @@ class CheckWindow(QMainWindow, Ui_Check):
         else:
             info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
 
-
     def shw_join_photo(self):
         if self.data[2]:
             self.ex = Example(self.data[2])
             self.ex.show()
         else:
             info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
-
 
     def shw_paper_photo(self):
         dt = self.curs.execute("""Select photo_path from paper where id = 1""").fetchall()[0][0]
@@ -110,7 +106,6 @@ class CheckWindow(QMainWindow, Ui_Check):
 
         else:
             info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
-
 
     def shw_tb_photo(self):
         try:
@@ -122,7 +117,6 @@ class CheckWindow(QMainWindow, Ui_Check):
                 info = QMessageBox.information(self, "Message", "Пользователь не загрузил эти данные")
         except Exception as er:
             print(er)
-
 
     def shw_ach_photo(self):
         try:
