@@ -89,18 +89,28 @@ class CheckWindow(QMainWindow, Ui_Check):
         self.btn_back.clicked.connect(self.go_to_main)
         self.btn_send.clicked.connect(self.sending)
 
+        self.fio = self.curs.execute(
+            f"""SELECT FIO from UserForm WHERE id = {self.user}""").fetchone()[0]
+        self.label_FIO.setText(self.fio)
+
     def sending(self):
         self.wrongs = []
         if self.radioButton_bad.isChecked():
             for box in self.checkbox_base:
                 if box.isChecked():
                     self.wrongs.append(box.text())
+            self.curs.execute(
+                f"""UPDATE UserForm set level = 'Отправлено на доработку' WHERE id = {self.user}"""
+            )
+            self.con.commit()
             # отправка письма с ошибками
         else:
-            pass
-            # отправка письма с участием
-        print(self.user)
-        print(self.wrongs)
+            self.curs.execute(
+                f"""UPDATE UserForm set level = 'Принято' WHERE id = {self.user}"""
+            )
+            self.con.commit()
+            print(self.user)
+            print(self.wrongs)
 
     def go_to_main(self):
         try:
@@ -225,12 +235,12 @@ class UI_Main(QMainWindow, Ui_MainWindow):
 
         self.conn = sqlite3.connect(self.path)
         self.curs = self.conn.cursor()
-        self.tableWidget.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        self.tableWidget.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
-        self.tableWidget.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
-        self.tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
-        self.tableWidget.horizontalHeader().setSectionResizeMode(4, QtWidgets.QHeaderView.Stretch)
-        self.tableWidget.horizontalHeader().setSectionResizeMode(5, QtWidgets.QHeaderView.Stretch)
+        # self.tableWidget.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        # self.tableWidget.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        # self.tableWidget.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        # self.tableWidget.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
+        # self.tableWidget.horizontalHeader().setSectionResizeMode(4, QtWidgets.QHeaderView.Stretch)
+        # self.tableWidget.horizontalHeader().setSectionResizeMode(5, QtWidgets.QHeaderView.Stretch)
         self.update_data()
         self.tableWidget.cellClicked.connect(self.student)
 
@@ -278,6 +288,12 @@ class UI_Main(QMainWindow, Ui_MainWindow):
                 f"""Select Address, Paper, PersonalData, Education, agree_path, edu_form, branch, Exams, Achives, birthday, place_of_birth, phone_number, photo_path, campus, copy, agree_join_path from Anket where id='{i + 1}'""").fetchone()
 
             kol = 0
+            self.level = self.curs.execute(
+                f"""Select level from UserForm WHERE id = {i + 1}""").fetchone()[0]
+            print(self.level)
+
+            if self.level == None:
+                self.level = 'Новый'
 
             if self.anketa:
                 for j in self.anketa:
@@ -286,6 +302,8 @@ class UI_Main(QMainWindow, Ui_MainWindow):
 
                 if kol == len(self.anketa):
                     self.student_status = 'Полный комплект'
+                    if self.level == 'Новый':
+                        self.level = 'На рассмотрении'
                 elif ((kol == len(self.anketa) - 1) or (kol == len(self.anketa) - 1)) and (
                         (not self.anketa[-1]) or (not self.anketa[-2])):
                     self.student_status = 'Комплект без оригинала'
@@ -296,8 +314,16 @@ class UI_Main(QMainWindow, Ui_MainWindow):
             else:
                 self.student_status = 'Новый'
 
+            self.curs.execute(
+                f"""UPDATE UserForm set level = '{self.level}' WHERE id = {i + 1}"""
+            )
+            self.conn.commit()
+
             self.tableWidget.setItem(i, 5, QTableWidgetItem())
             self.tableWidget.item(i, 5).setText(self.student_status)
+
+            self.tableWidget.setItem(i, 6, QTableWidgetItem())
+            self.tableWidget.item(i, 6).setText(self.level)
 
     def student(self):
         try:

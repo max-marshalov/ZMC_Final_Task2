@@ -56,6 +56,11 @@
       <string>Статус</string>
      </property>
     </column>
+    <column>
+     <property name="text">
+      <string>Стадия</string>
+     </property>
+    </column>
    </widget>
    <widget class="QPushButton" name="btn_go_to_tables">
     <property name="geometry">
