@@ -7,6 +7,22 @@ from check import Ui_Check
 from join import *
 from Results_Table import *
 import sys
+import smtplib
+
+yandex_mail = 'info40.sgu@mail.ru'
+yandex_pass = 'Team40SGU'
+
+
+def send_emails(mail, msg):
+    server = smtplib.SMTP_SSL('smtp.mail.ru', 465)
+    server.ehlo()
+    server.login(yandex_mail, yandex_pass)
+    server.auth_plain()
+    send_to_email = mail
+    server.login(yandex_mail, yandex_pass)
+    server.sendmail(yandex_mail, send_to_email, msg)
+    server.quit()
+    print('E-mails successfully sent!')
 
 
 class Join(QtWidgets.QMainWindow):
@@ -92,6 +108,8 @@ class CheckWindow(QMainWindow, Ui_Check):
         self.fio = self.curs.execute(
             f"""SELECT FIO from UserForm WHERE id = {self.user}""").fetchone()[0]
         self.label_FIO.setText(self.fio)
+        self.mail = self.curs.execute(
+                f"""SELECT email from UserForm WHERE id = {self.user}""").fetchall()[0]
 
     def sending(self):
         self.wrongs = []
@@ -104,8 +122,33 @@ class CheckWindow(QMainWindow, Ui_Check):
             )
             self.con.commit()
             # отправка письма с ошибками
+
+            message = f"""Добрый день, {self.fio}!
+Уведомляем вас, что при подаче документов в Сызранский государственный университет имени Филиппа Лимонадова вы допустили ошибки в:
+            {', '.join(self.wrongs)} 
+Просим исправить ошибки в ближайшее время.
+С уважением,
+приемная комиссия СГУ им. Ф.Лимонадова"""
+
+            message = message.encode("utf-8")
+
+            mail = self.mail
+
+            send_emails(mail, message)
+
         else:
             # отправка письма об участии
+
+            message = f"""Добрый день, {self.fio}!
+Уведомляем вас, что вы успешно подали документы в Сызранский государственный университет имени Филиппа Лимонадова. С этого момента вы участвуете в конкурсе на зачисление.
+С уважением,
+приемная комиссия СГУ им. Ф.Лимонадова"""
+            message = message.encode("utf-8")
+
+            mail = self.mail
+
+            send_emails(mail, message)
+
             self.curs.execute(
                 f"""UPDATE UserForm set level = 'Принято' WHERE id = {self.user}"""
             )
